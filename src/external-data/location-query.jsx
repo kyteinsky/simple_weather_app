@@ -2,13 +2,12 @@ import axios from 'axios'
 
 export const getLocationSuggestions = async (q) => {
   try {
-    return await axios.get(`http://api.positionstack.com/v1/forward`,
+    return await axios.get(`https://api.openweathermap.org/geo/1.0/direct`,
       {
         params: {
-          query: q,
+          q,
           limit: 5,
-          access_key: import.meta.env.VITE_POSITION_STACK_APIKEY,
-          output: 'json'
+          appid: import.meta.env.VITE_OPEN_WEATHER_APIKEY
         }
       }
     )

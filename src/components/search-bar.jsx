@@ -6,12 +6,15 @@ import { getLocationSuggestions } from '../external-data/location-query'
 const getLocationListTags = (locations) => {
   if (locations.length === 0) return <p>Nothing found</p>
   return locations.map(
-    (loc, i) =>
-      <li key={i}>
-        <Link to={`/${loc.latitude}:${loc.longitude}:${loc.label}`}>
-          {loc.label}
-        </Link>
-      </li>
+    (loc, i) => {
+      const { lat, lon, name, state, country } = loc
+      const label = [name, state, country].join(', ')
+      return (
+        <li key={i}>
+          <Link to={`/${lat}:${lon}:${label}`}>{label}</Link>
+        </li>
+      )
+    }
   )
 }
 
@@ -27,14 +30,14 @@ export default function SearchBar() {
     }
 
     const res = await getLocationSuggestions(q)
-    if (res.error) {
+    if (res?.status !== 200 || !res?.data) {
       setLocations(
-        <p>{res?.error?.response?.statusText || "Some errror occurred"}</p>
+        <p>{res.statusText || "Some errror occurred"}</p>
       )
       return
     }
 
-    const locListTags = getLocationListTags(res?.data?.data)
+    const locListTags = getLocationListTags(res.data)
     setLocations(locListTags)
   }
 
