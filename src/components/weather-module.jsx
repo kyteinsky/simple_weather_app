@@ -20,7 +20,7 @@ const getWeatherCard = ({ main, weather, wind }) => {
 export default function WeatherModule() {
   const { location } = useParams()
   const [loc, setLoc] = useState("")
-  const [weatherData, setWeatherData] = useState(<></>)
+  const [weatherData, setWeatherData] = useState(<>Loading...</>)
 
   useEffect(() => {
     const [lat, lon, label] = location.split(':')
